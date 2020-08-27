@@ -1,0 +1,11 @@
+{
+    "extends": ["plugin:zillow/recommended", "plugin:zillow/jest"],
+    "rules": {
+        "func-names": "off",
+        "class-methods-use-this": "off",
+        "radix": "off",
+        "no-plusplus": "off",
+        "zillow/jest/prefer-strict-equal": "off",
+        "zillow/jest/require-tothrow-message": "off"
+    }
+}
