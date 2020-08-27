@@ -11,11 +11,11 @@ export default function stopProject(projectName) {
     }
 
     const lastRow = sheet.getLastRow();
-    const range = sheet.getRange(lastRow, 2);
+    const range = sheet.getRange(lastRow, 2, 1, 2);
     if (range.getValue()) {
         throw new Error(
             `Could not stop project named "${projectName}" because it has not been started.`
         );
     }
-    range.setValues([[new Date()]]);
+    range.setValues([[new Date(), `=B${lastRow}-A${lastRow}`]]);
 }

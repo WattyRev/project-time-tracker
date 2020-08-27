@@ -12,11 +12,13 @@ export default function startProject(projectName) {
 
     const lastRow = sheet.getLastRow();
     const latestStop = sheet.getRange(lastRow, 2).getValue();
+    log('last row', lastRow);
+    log('latestStop', latestStop);
     if (!latestStop) {
         throw new Error(
             `Could not start project named "${projectName}" because it has not been stopped.`
         );
     }
-    const range = sheet.getRange(lastRow + 1, 1, 1, 3);
-    range.setValues([[new Date(), '', `=B${lastRow + 1}-A${lastRow + 1}`]]);
+    const range = sheet.getRange(lastRow + 1, 1);
+    range.setValue(new Date());
 }

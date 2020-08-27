@@ -10,6 +10,7 @@ function onGet(e) {
 
 function onPost(e) {
     return errorInterceptor(() => {
+        log('onPost', e);
         const request = new PostRequest(e);
         return route(request, 'post');
     });
