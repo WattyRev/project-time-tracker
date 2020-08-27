@@ -1,4 +1,6 @@
 import log from './util/log';
+import PostRequest from './models/PostRequest';
+import route from './router';
 
 function onGet(e) {
     return errorInterceptor(() => {
@@ -8,7 +10,8 @@ function onGet(e) {
 
 function onPost(e) {
     return errorInterceptor(() => {
-        log('onPost', e);
+        const request = new PostRequest(e);
+        return route(request, 'post');
     });
 }
 
