@@ -32,11 +32,11 @@ export default function createProject(projectName) {
 
     // Add duration formatting for the elapsed time column
     const elapsedTimeRange = sheet.getRange(1, 3, 99, 1);
-    elapsedTimeRange.setNumberFormat('[hh]:[mm]');
+    elapsedTimeRange.setNumberFormat('[hh]":"m');
 
     // Add duration formatting for the total time
     const totalTimeRange = sheet.getRange(1, 5);
-    totalTimeRange.setNumberFormat('[hh]:[mm]');
+    totalTimeRange.setNumberFormat('[hh]":"m');
 
     // Add date/time formatting for the start/end columns
     const dateLogRange = sheet.getRange(1, 1, 99, 2);
