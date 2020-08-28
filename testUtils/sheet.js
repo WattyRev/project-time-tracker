@@ -1,8 +1,20 @@
 /**
  * Creates a mock sheet from the provided rectangular array data.
  */
-export function createMockSheet(data) {
+export function createMockSheet(data, numberFormat = null) {
+    if (!data) {
+        return null;
+    }
     return {
+        numberFormat,
+        getLastRow() {
+            return data.reduce((lastRow, row, index) => {
+                if (row.find(cell => !!cell)) {
+                    return index + 1;
+                }
+                return lastRow;
+            }, 1);
+        },
         getRange(rowStart, columnStart, numRows = 1, numColumns = 1) {
             const rows = data.filter(
                 (_, index) => index >= rowStart - 1 && index < numRows + rowStart - 1
@@ -17,7 +29,10 @@ export function createMockSheet(data) {
                     return filteredRows;
                 },
                 getValue() {
-                    return data[rowStart - 1][columnStart - 1];
+                    if (!filteredRows || !filteredRows[0]) {
+                        return null;
+                    }
+                    return filteredRows[0][0];
                 },
                 setValue(value) {
                     const updatedData = data;
@@ -27,9 +42,19 @@ export function createMockSheet(data) {
                 setValues(values) {
                     const updatedData = data;
                     values.forEach((valueRow, rowIndex) => {
-                        updatedData[rowStart - 1 + rowIndex] = valueRow;
+                        valueRow.forEach((cell, cellIndex) => {
+                            if (!updatedData[rowStart - 1 + rowIndex]) {
+                                updatedData[rowStart - 1 + rowIndex] = [];
+                            }
+                            updatedData[rowStart - 1 + rowIndex][
+                                columnStart - 1 + cellIndex
+                            ] = cell;
+                        });
                     });
                     return createMockSheet(updatedData);
+                },
+                setNumberFormat(updatedFormat) {
+                    return createMockSheet(data, updatedFormat);
                 },
             };
         },
@@ -47,6 +72,13 @@ export function createMockSpreadsheet(overrides = {}) {
     return {
         getSheetByName(name) {
             return createMockSheet(data[name]);
+        },
+        insertSheet(name) {
+            data[name] = [];
+            return createMockSheet(data[name]);
+        },
+        getData() {
+            return data;
         },
     };
 }

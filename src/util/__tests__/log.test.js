@@ -1,8 +1,8 @@
 import { createMockSheet } from '../../../testUtils/sheet';
-import spreadsheetApi from '../../api/SpreadsheetApi';
+import getSpreadsheet from '../../globals/Spreadsheet';
 import log, { MAX_LOG_ROWS } from '../log';
 
-jest.mock('../../api/SpreadsheetApi');
+jest.mock('../../globals/Spreadsheet');
 
 function getMockLogData() {
     const logs = [];
@@ -16,7 +16,9 @@ describe('log', () => {
     beforeEach(() => {
         const mockLogData = getMockLogData();
         const mockSheet = createMockSheet(mockLogData);
-        spreadsheetApi.getLogsSheet.mockReturnValue(mockSheet);
+        getSpreadsheet.mockReturnValue({
+            getSheetByName: jest.fn().mockReturnValue(mockSheet),
+        });
     });
     it('adds a new log message at the top of the spreadsheet', () => {
         expect.assertions(1);
@@ -27,6 +29,6 @@ describe('log', () => {
         expect.assertions(2);
         const updatedSheet = log('foo');
         expect(updatedSheet.getRange(400, 2).getValue()).toEqual('Mock log message 399');
-        expect(() => updatedSheet.getRange(401, 2).getValue()).toThrow();
+        expect(updatedSheet.getRange(401, 2).getValue()).toBeNull();
     });
 });
