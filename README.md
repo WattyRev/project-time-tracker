@@ -60,7 +60,7 @@ with payload
 ```json
 {
     "passcode": "secretString",
-    "projectName": "new project name",
+    "projectName": "project name",
 }
 ```
 
@@ -73,7 +73,20 @@ with payload
 ```json
 {
     "passcode": "secretString",
-    "projectName": "new project name",
+    "projectName": "project name",
+}
+```
+
+#### Complete Project
+Updates the project's sheet name to show that it is completed. This allows a new project to be created with the same name.
+
+`POST https://script.google.com/macros/s/AKfycbz3yPcFNe6X4EMh3jyh6MCUb_0xDMnwSgMtQB1mkvunJEkdc-8/exec?action=complete`
+
+with payload
+```json
+{
+    "passcode": "secretString",
+    "projectName": "project name",
 }
 ```
 
