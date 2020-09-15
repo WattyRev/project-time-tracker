@@ -1,3 +1,4 @@
+import completeProject from './actions/completeProject';
 import createProject from './actions/createProject';
 import startProject from './actions/startProject';
 import stopProject from './actions/stopProject';
@@ -17,6 +18,8 @@ export default function route(request, method) {
                 return stopProject(request.payload.projectName);
             case 'create':
                 return createProject(request.payload.projectName);
+            case 'complete':
+                return completeProject(request.payload.projectName);
             default:
                 return 'No route found';
         }

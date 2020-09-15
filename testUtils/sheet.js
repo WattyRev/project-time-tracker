@@ -1,3 +1,5 @@
+/* global jest */
+
 /**
  * Creates a mock sheet from the provided rectangular array data.
  */
@@ -6,6 +8,7 @@ export function createMockSheet(data, numberFormat = null) {
         return null;
     }
     return {
+        setName: jest.fn(),
         numberFormat,
         getLastRow() {
             return data.reduce((lastRow, row, index) => {
