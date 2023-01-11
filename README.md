@@ -9,12 +9,12 @@ I want to track the time I spend building kites so I understand how much I am ch
 
 Architecture:
 ```
-Manually trigger processes via voice
-+------------------+
-|                  |
-| Google Assistant +-------------------+
-|                  |                   |
-+------------------+                   |
+Manually trigger processes via ^oice
++------------------+           +----------------+
+|                  |           |                |
+| Google Assistant +-----------+ Home Assistant |
+|                  |           |                |
++------------------+           +-------+--------+
                                        |
                                        | Make POST requests
                                        v to the script
@@ -26,6 +26,7 @@ Manually trigger processes via voice
                                 +------------+ Manage data   +---------------+
                                                in a spreadsheet to log
                                                project's start/end times
+
 
 ```
 
