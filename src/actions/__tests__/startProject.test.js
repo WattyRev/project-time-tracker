@@ -1,5 +1,5 @@
 import MockDate from 'mockdate';
-import { createMockSpreadsheet } from '../../../testUtils/sheet';
+import { createMockSpreadsheet, createMockSheet } from '../../../testUtils/sheet';
 import getSpreadsheet from '../../globals/Spreadsheet';
 import startProject from '../startProject';
 
@@ -11,39 +11,51 @@ describe('startProject', () => {
     beforeEach(() => {
         MockDate.set('2019-11-24T10:00:00.000Z');
         mockSpreadsheet = createMockSpreadsheet({
-            test: [
+            1: createMockSheet([
                 ['Start time', 'Stop time', 'Elapsed', 'Total', 'whatever'],
                 [null, null, null],
-            ],
+            ]),
         });
         getSpreadsheet.mockReturnValue(mockSpreadsheet);
     });
     it('adds a new start time to the sheet', () => {
         expect.assertions(1);
-        startProject('test');
-        expect(mockSpreadsheet.getData().test).toEqual([
+        startProject();
+        expect(mockSpreadsheet.getData()[1].getData()).toEqual([
             ['Start time', 'Stop time', 'Elapsed', 'Total', 'whatever'],
             [new Date('2019-11-24T10:00:00.000Z'), null, null],
         ]);
     });
-    it('throws if the sheet does not exist', () => {
+    it('throws if the project has been completed', () => {
         expect.assertions(1);
-        mockSpreadsheet = createMockSpreadsheet();
+        mockSpreadsheet = createMockSpreadsheet({
+            1: createMockSheet(
+                [
+                    ['Start time', 'Stop time', 'Elapsed', 'Total', 'whatever'],
+                    [null, null, null],
+                ],
+                { name: 'test - Completed' }
+            ),
+        });
         getSpreadsheet.mockReturnValue(mockSpreadsheet);
 
-        expect(() => startProject('test')).toThrow();
+        expect(() => startProject('test')).toThrow(
+            'Could not start project named "test - Completed" because it has already been completed.'
+        );
     });
     it("throws if the previous timer hasn't been stopped", () => {
         expect.assertions(1);
         mockSpreadsheet = createMockSpreadsheet({
-            test: [
+            1: createMockSheet([
                 ['Start time', 'Stop time', 'Elapsed', 'Total', 'whatever'],
                 [new Date('2019-11-24T10:00:00.000Z'), null, null],
                 [null, null, null],
-            ],
+            ]),
         });
         getSpreadsheet.mockReturnValue(mockSpreadsheet);
 
-        expect(() => startProject('test')).toThrow();
+        expect(() => startProject('test')).toThrow(
+            'Could not start project named "test name" because it has not been stopped.'
+        );
     });
 });

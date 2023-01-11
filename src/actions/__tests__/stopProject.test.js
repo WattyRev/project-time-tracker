@@ -1,5 +1,5 @@
 import MockDate from 'mockdate';
-import { createMockSpreadsheet } from '../../../testUtils/sheet';
+import { createMockSpreadsheet, createMockSheet } from '../../../testUtils/sheet';
 import getSpreadsheet from '../../globals/Spreadsheet';
 import stopProject from '../stopProject';
 
@@ -11,38 +11,33 @@ describe('stopProject', () => {
     beforeEach(() => {
         MockDate.set('2019-11-24T10:00:00.000Z');
         mockSpreadsheet = createMockSpreadsheet({
-            test: [
+            1: createMockSheet([
                 ['Start time', 'Stop time', 'Elapsed', 'Total', 'whatever'],
                 [new Date('2019-11-23T10:00:00.000Z'), null, null],
-            ],
+            ]),
         });
         getSpreadsheet.mockReturnValue(mockSpreadsheet);
     });
     it('adds a new stop time to the sheet', () => {
         expect.assertions(1);
-        stopProject('test');
-        expect(mockSpreadsheet.getData().test).toEqual([
+        stopProject();
+        expect(mockSpreadsheet.getData()[1].getData()).toEqual([
             ['Start time', 'Stop time', 'Elapsed', 'Total', 'whatever'],
             [new Date('2019-11-23T10:00:00.000Z'), new Date('2019-11-24T10:00:00.000Z'), '=B2-A2'],
         ]);
     });
-    it('throws if the sheet does not exist', () => {
-        expect.assertions(1);
-        mockSpreadsheet = createMockSpreadsheet();
-        getSpreadsheet.mockReturnValue(mockSpreadsheet);
-
-        expect(() => stopProject('test')).toThrow();
-    });
     it("throws if the timer hasn't been started", () => {
         expect.assertions(1);
         mockSpreadsheet = createMockSpreadsheet({
-            test: [
+            1: createMockSheet([
                 ['Start time', 'Stop time', 'Elapsed', 'Total', 'whatever'],
                 [null, null, null],
-            ],
+            ]),
         });
         getSpreadsheet.mockReturnValue(mockSpreadsheet);
 
-        expect(() => stopProject('test')).toThrow();
+        expect(() => stopProject()).toThrow(
+            'Could not stop project named "test name" because it has not been started.'
+        );
     });
 });

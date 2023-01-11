@@ -1,16 +1,18 @@
 import log from '../util/log';
 import getSpreadsheet from '../globals/Spreadsheet';
 
-export default function startProject(projectName) {
-    log(`Starting project named "${projectName}"`);
-
+export default function startProject() {
     // Get the spreadsheet
     const spreadsheet = getSpreadsheet();
-    const sheet = spreadsheet.getSheetByName(projectName);
+    const sheet = spreadsheet.getSheets()[1];
+    const projectName = sheet.getName();
+    log(`Starting project named "${projectName}"`);
 
-    // Throw if a tab with the provided project name doesn't exist
-    if (sheet == null) {
-        throw new Error(`Could not start project named "${projectName}" because it does not exist`);
+    // Throw if the project has alredy been completed
+    if (projectName.includes('Completed')) {
+        throw new Error(
+            `Could not start project named "${projectName}" because it has already been completed.`
+        );
     }
 
     // Get the last row (lowest row with content in it) to determine where to

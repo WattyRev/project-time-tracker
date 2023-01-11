@@ -9,20 +9,26 @@ import getSpreadsheet from '../globals/Spreadsheet';
  *
  * @param  {String} projectName
  */
-export default function createProject(projectName) {
-    log(`Creating project named "${projectName}"`);
+export default function createProject() {
+    const defaultProjectName = `Project-${new Date().toLocaleDateString()}`;
+    log(`Creating project named "${defaultProjectName}"`);
 
     // Get the spreadsheet
     const spreadsheet = getSpreadsheet();
-    const existingSheet = spreadsheet.getSheetByName(projectName);
+    const existingSheet = spreadsheet.getSheets()[1];
+    if (existingSheet) {
+        const existingSheetName = existingSheet.getName();
 
-    // Can't create the sheet if one already exists
-    if (existingSheet !== null) {
-        throw new Error(`A project named "${projectName}" already exists`);
+        if (!existingSheetName.includes('Completed')) {
+            throw new Error(
+                `Project ${existingSheetName} is not yet completed. Complete that project before starting a new one.`
+            );
+        }
     }
 
-    // Create the sheet with the project name
-    const sheet = spreadsheet.insertSheet(projectName);
+    // Create the sheet with the default project name
+    // Insert the sheet as the second sheet, right behind Logs
+    const sheet = spreadsheet.insertSheet(defaultProjectName, 1);
 
     // Add a heading row with a forumula for calculating total time.
     // The total time is in the top row to prevent interfering with automated

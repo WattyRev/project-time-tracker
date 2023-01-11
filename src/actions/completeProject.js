@@ -9,19 +9,21 @@ import getSpreadsheet from '../globals/Spreadsheet';
  *
  * @param  {String} projectName
  */
-export default function createProject(projectName) {
-    log(`Completing project named "${projectName}"`);
-
+export default function completeProject() {
     // Get the spreadsheet
     const spreadsheet = getSpreadsheet();
-    const sheet = spreadsheet.getSheetByName(projectName);
+
+    // Always getting the second sheet since that's where we put it on createProject
+    const sheet = spreadsheet.getSheets()[1];
+    const sheetName = sheet.getName();
+    log(`Completing project named "${sheetName}"`);
 
     // Can't complete a project that doesn't exist
-    if (sheet == null) {
+    if (sheetName.includes('Completed')) {
         throw new Error(
-            `Could not complete project named "${projectName}" because it does not exist.`
+            `Could not complete project named "${sheetName}" because it is already completed.`
         );
     }
 
-    sheet.setName(`${projectName} - Completed ${moment().format('YYYY/MM/DD hh:mm:ss a')}`);
+    sheet.setName(`${sheetName} - Completed ${moment().format('YYYY/MM/DD hh:mm:ss a')}`);
 }
