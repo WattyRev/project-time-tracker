@@ -10,16 +10,16 @@ I want to track the time I spend building kites so I understand how much I am ch
 Architecture:
 ```
 Manually trigger processes via voice
-+------------------+              +---------+
-|                  |              |         |
-| Google Assistant +------------->+  IFTTT  |
-|                  |              |         |
-+------------------+              +----+----+
++------------------+
+|                  |
+| Google Assistant +-------------------+
+|                  |                   |
++------------------+                   |
                                        |
                                        | Make POST requests
-                                       | to the script
-                                       v
-                                +------+-----+               +---------------+
+                                       v to the script
+
+                                +------------+               +---------------+
                                 |            |               |               |
                                 | App Script +-------------->+ Google Sheets |
                                 |            |               |               |
@@ -46,8 +46,7 @@ Creates a new spreadsheet tab (sheet)
 with payload
 ```json
 {
-    "passcode": "secretString",
-    "projectName": "new project name",
+    "passcode": "secretString"
 }
 ```
 
@@ -59,8 +58,7 @@ Logs a start time for the relevant project in the spreadsheet
 with payload
 ```json
 {
-    "passcode": "secretString",
-    "projectName": "project name",
+    "passcode": "secretString"
 }
 ```
 
@@ -72,8 +70,7 @@ Logs an end time for the relevant project in the spreadsheet
 with payload
 ```json
 {
-    "passcode": "secretString",
-    "projectName": "project name",
+    "passcode": "secretString"
 }
 ```
 
@@ -85,8 +82,7 @@ Updates the project's sheet name to show that it is completed. This allows a new
 with payload
 ```json
 {
-    "passcode": "secretString",
-    "projectName": "project name",
+    "passcode": "secretString"
 }
 ```
 
@@ -94,8 +90,3 @@ with payload
 https://docs.google.com/spreadsheets/d/1qjZjHGqGeOq7pv1ohsgupzh05Y_NsyTA5gAmJr7-cy8/edit#gid=0 (No you can't have access. This link is for my benefit not yours.)
 
 Google Sheets serves as the storage for logs and for storing start/end times.
-
-### IFTTT
-http://ifttt.com
-
-IFTTT is used as the intermediary between 3rd party services (Google Assistant) and my script. Here I have applets set up to intercept Google Assistant queries and send network requests to my script.

@@ -1,17 +1,12 @@
 import log from '../util/log';
 import getSpreadsheet from '../globals/Spreadsheet';
 
-export default function stopProject(projectName) {
-    log(`Stopping project named "${projectName}"`);
-
+export default function stopProject() {
     // Get the spreadsheet
     const spreadsheet = getSpreadsheet();
-    const sheet = spreadsheet.getSheetByName(projectName);
-
-    // Throw if the sheet doesn't exist
-    if (sheet == null) {
-        throw new Error(`Could not stop project named "${projectName}" because it does not exist`);
-    }
+    const sheet = spreadsheet.getSheets()[1];
+    const projectName = sheet.getName();
+    log(`Stopping project named "${projectName}"`);
 
     // Get the last row (lowest row with content in it) to determine where to
     // put the new stop entry

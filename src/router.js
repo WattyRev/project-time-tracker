@@ -13,13 +13,13 @@ export default function route(request, method) {
     if (method === 'post') {
         switch (request.action) {
             case 'start':
-                return startProject(request.payload.projectName);
+                return startProject();
             case 'stop':
-                return stopProject(request.payload.projectName);
+                return stopProject();
             case 'create':
-                return createProject(request.payload.projectName);
+                return createProject();
             case 'complete':
-                return completeProject(request.payload.projectName);
+                return completeProject();
             default:
                 return 'No route found';
         }
